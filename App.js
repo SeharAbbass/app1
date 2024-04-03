@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, FlatList, Image, StyleSheet, ImageBackground, TextInput, Switch } from 'react-native';
+import { View, Text, FlatList, Image, StyleSheet, ImageBackground, TextInput, Switch, ActivityIndicator } from 'react-native';
 import axios from 'axios';
 import { useEffect } from 'react';
 
@@ -30,7 +30,7 @@ const App = () => {
     }
 
     return (
-        <ImageBackground source={require('../assets/background.jpg')} style={styles.background}>
+        <ImageBackground source={require('./assets/background.jpg')} style={styles.background}>
             <View style={styles.container}>
                 <View style={styles.header}>
                     <Text>{language === 'english' ? 'زبان تبدیل کریں' : 'Change Language'}</Text>
@@ -73,7 +73,7 @@ const BookItem = ({ book, language }) => {
 
     return (
         <View style={styles.bookContainer}>
-            <Image source={require('../assets/images/sampleCover.jpeg')} style={styles.coverPhoto} />
+            <Image source={require('./assets/sampleCover.jpeg')} style={styles.coverPhoto} />
             <View style={styles.bookDetails}>
                 <Text style={styles.title}>{getTitle()}</Text>
                 <Text style={styles.author}>{language === 'english' ? 'Author' : 'مصنف'}: {book.author.name}</Text>
@@ -108,11 +108,14 @@ const useFetchData = (url) => {
     return { data, loading, error };
 };
 
-const LoadingScreen = () => (
-    <View style={styles.loadingContainer}>
-        <Text>Loading...</Text>
-    </View>
-);
+const LoadingScreen = () => {
+    return (
+      <View style={styles.loadingContainer}>
+        <Text style={styles.loadingText}>Loading...</Text>
+        <ActivityIndicator size="large" color="#ff7f50" />
+      </View>
+    );
+  };
 
 const ErrorScreen = ({ error }) => (
     <View style={styles.errorContainer}>
@@ -192,7 +195,14 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-    },
+        backgroundColor: '#f0f0f0', // Light background color
+      },
+      loadingText: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        marginBottom: 20,
+        color: '#ff7f50', // Orange color for text
+      },
     errorContainer: {
         flex: 1,
         justifyContent: 'center',
